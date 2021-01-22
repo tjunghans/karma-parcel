@@ -4,7 +4,7 @@ import { Request, Response } from "express-serve-static-core";
 import * as os from "os";
 import * as path from "path";
 import * as sinon from "sinon";
-import * as bundler from "./bunlder";
+import * as bundler from "./bundler";
 import { EntryFile } from "./files";
 import {
   createParcelPlugin,
@@ -13,7 +13,6 @@ import {
   KarmaServer
 } from "./plugin";
 import { KarmaFile, Logger } from "./types";
-import karma = require("karma");
 
 class EmitterStub {
   refreshFile() {
@@ -278,7 +277,7 @@ describe("plugin", () => {
           sinon.assert.calledOnce(createMiddleware);
         });
 
-        it("adapts the req.url before passing it to the bunlder middleware", () => {
+        it("adapts the req.url before passing it to the bundler middleware", () => {
           req.url = "/some/path/to/.karma-parcel/index.js";
           const next = sinon.stub();
 

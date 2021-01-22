@@ -9,6 +9,19 @@ import { promisify } from "util";
 import { createWorkspaceSync, EntryFile } from "./files";
 import mkdirp = require("mkdirp");
 
+function count(needle: string, haystack: string): number {
+  const regex = new RegExp(needle, 'ig')
+  return (haystack.match(regex) || []).length;
+}
+
+// use dirUps to create a string of repeating "../"
+// eg. num = 0 => result = ""
+// eg. num = 1 => result = "../"
+// eg. num = 2 => result = "../../"
+function dirUps(num: number): string {
+  return Array(num).fill("../").join("");
+}
+
 describe("files", () => {
   afterEach(() => sinon.restore());
 
@@ -30,7 +43,7 @@ describe("files", () => {
       const workspace = createWorkspaceSync();
 
       assert.ok(workspace);
-      assert.equal(workspace.toString(), "Workspace()");
+      assert.strictEqual(workspace.toString(), "Workspace()");
     });
 
     it("creates a directory named .karma-parcel in process.cwd()", () => {
@@ -64,7 +77,7 @@ describe("files", () => {
         const workspace = createWorkspaceSync();
 
         assert.ok(workspace.dir);
-        assert.equal(workspace.dir, path.join(cwd, ".karma-parcel"));
+        assert.strictEqual(workspace.dir, path.join(cwd, ".karma-parcel"));
       });
 
       it("exports an EntryFile ", () => {
@@ -91,7 +104,9 @@ describe("files", () => {
           .add("/path/to/file")
           .then(() => promisify(fs.readFile)(file.path))
           .then(cont => {
-            assert.equal(cont.toString("utf8"), `import "../../path/to/file";`);
+            // os.tmpDir can be in different locations depending on the os, 
+            // so the result will be different
+            assert.strictEqual(cont.toString("utf8"), `import "${dirUps(count("/", file.dir))}path/to/file";`);
           });
       });
     });
@@ -113,9 +128,9 @@ describe("files", () => {
             .add("/path/other/file")
             .then(() => promisify(fs.readFile)(file.path))
             .then(cont => {
-              assert.equal(
+              assert.strictEqual(
                 cont.toString("utf8"),
-                `import "../../../path/other/file";`
+                `import "${dirUps(count("/", file.dir))}path/other/file";`
               );
             });
         });
@@ -137,7 +152,7 @@ describe("files", () => {
             .add(path.join(dir, "path/other/file"))
             .then(() => promisify(fs.readFile)(file.path))
             .then(cont => {
-              assert.equal(
+              assert.strictEqual(
                 cont.toString("utf8"),
                 `import "./path/other/file";`
               );

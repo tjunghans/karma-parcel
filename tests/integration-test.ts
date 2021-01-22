@@ -40,8 +40,8 @@ describe("integration test", () => {
       files: ["./**/javascript.Spec.js"]
     }).then(results => {
       assert.ok(results);
-      assert.equal(results.success, 1);
-      assert.equal(results.failed, 1);
+      assert.strictEqual(results.success, 1);
+      assert.strictEqual(results.failed, 1);
     });
   });
 
@@ -50,8 +50,8 @@ describe("integration test", () => {
       files: ["./**/typescript.Spec.ts"]
     }).then(results => {
       assert.ok(results);
-      assert.equal(results.success, 1);
-      assert.equal(results.failed, 1);
+      assert.strictEqual(results.success, 1);
+      assert.strictEqual(results.failed, 1);
     });
   });
 
@@ -60,8 +60,8 @@ describe("integration test", () => {
       files: ["./*.Spec.ts", "./*.Spec.js", "non-parcel-test.js"]
     }).then(results => {
       assert.ok(results);
-      assert.equal(results.success, 4);
-      assert.equal(results.failed, 2);
+      assert.strictEqual(results.success, 4);
+      assert.strictEqual(results.failed, 2);
     });
   });
 });

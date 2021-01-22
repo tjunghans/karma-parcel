@@ -53,7 +53,7 @@ describe("framework", () => {
       );
 
       setImmediate(() => {
-        assert.deepEqual(configFiles, [
+        assert.deepStrictEqual(configFiles, [
           {
             included: true,
             pattern: bundleFile,
@@ -75,7 +75,7 @@ describe("framework", () => {
       createParcelFramework(logger, conf, (plugin as any) as ParcelPlugin);
 
       setImmediate(() => {
-        assert.deepEqual(conf.middleware, ["parcel"]);
+        assert.deepStrictEqual(conf.middleware, ["parcel"]);
         done();
       });
     });
@@ -90,7 +90,7 @@ describe("framework", () => {
       createParcelFramework(logger, conf, (plugin as any) as ParcelPlugin);
 
       setImmediate(() => {
-        assert.deepEqual(conf.middleware, ["middleware1", "parcel"]);
+        assert.deepStrictEqual(conf.middleware, ["middleware1", "parcel"]);
         done();
       });
     });
@@ -105,7 +105,7 @@ describe("framework", () => {
       createParcelFramework(logger, conf, (plugin as any) as ParcelPlugin);
 
       setImmediate(() => {
-        assert.deepEqual(conf.middleware, ["middleware1", "parcel"]);
+        assert.deepStrictEqual(conf.middleware, ["middleware1", "parcel"]);
         done();
       });
     });
